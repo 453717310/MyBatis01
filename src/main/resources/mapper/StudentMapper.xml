@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.StudentMapper">
+    <!--新增-->
+    <insert id="add" parameterType="Student">
+        insert into
+        student(age,name) values(#{age},#{name})
+    </insert>
+    <!--新增并获得id-->
+    <insert id="addGetId" parameterType="Student">
+        insert into
+        student(age,name) values(#{age},#{name})
+        <selectKey resultType="int" keyProperty="id" keyColumn="id" order="AFTER">
+            /*SELECT @@IDENTITY*/
+            SELECT last_insert_id()
+        </selectKey>
+    </insert>
+    <!--查询-->
+    <select id="find" resultType="Student">
+        SELECT id,name,age FROM student
+    </select>
+    <!--删除-->
+    <delete id="delete" parameterType="int">
+        DELETE FROM student WHERE id=#{***}
+    </delete>
+    <!--修改-->
+    <update id="update" parameterType="Student">
+        UPDATE student SET name=#{name},age=#{age} WHERE id=#{id}
+    </update>
+    <!--查询-->
+    <select id="findMap" resultMap="studentMap">
+        SELECT id,name,age FROM student
+    </select>
+    <resultMap id="studentMap" type="Student">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+    </resultMap>
+
+</mapper>
