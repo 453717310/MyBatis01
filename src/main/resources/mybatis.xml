@@ -4,6 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <properties resource="jdbc.properties"/>
+    <!--设置延迟加载-->
+    <settings>
+        <!--打开延迟加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--用的时候 才加载-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
     <!--创建别名-->
     <typeAliases>
         <package name="bean"/>
@@ -21,6 +28,9 @@
 
     </environments>
     <mappers>
-        <mapper resource="mapper/StudentMapper.xml"></mapper>
+        <!--<mapper resource="mapper/StudentMapper.xml"></mapper>-->
+        <!--<mapper resource="mapper/CountryMapper.xml"></mapper>-->
+        <!--<mapper resource="mapper/ProvincialMapper.xml"></mapper>-->
+        <mapper resource="mapper/TeacherMapper.xml"></mapper>
     </mappers>
 </configuration>

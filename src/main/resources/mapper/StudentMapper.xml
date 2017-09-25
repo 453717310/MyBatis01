@@ -22,8 +22,8 @@
         SELECT id,name,age FROM student
     </select>
     <!--删除-->
-    <delete id="delete" parameterType="int">
-        DELETE FROM student WHERE id=#{***}
+    <delete id="delete">
+        DELETE FROM student WHERE id=#{id}
     </delete>
     <!--修改-->
     <update id="update" parameterType="Student">
@@ -39,4 +39,73 @@
         <result property="age" column="age"/>
     </resultMap>
 
+    <!--多条件查询  参数必须和map的key对应-->
+   <!-- <select id="findMoreContion" parameterType="Map" resultType="Student">
+        SELECT id,name,age FROM student
+        WHERE name LIKE concat('%',#{stuName},'%')
+        AND age>#{stuAge}
+    </select>-->
+     <select id="findMoreContion" parameterType="Map" resultType="Student">
+            SELECT id,name,age FROM student
+            WHERE name LIKE concat('%',#{stuName},'%')
+            AND age>#{stuAge}
+            AND id>#{stu.id}
+     </select>
+    <select id="findMoreCondition" resultType="Student">
+        SELECT id,name,age FROM student
+        WHERE name LIKE concat('%',#{0},'%')
+        AND age >#{1}
+    </select>
+    <select id="findMore" resultType="Student">
+        SELECT id,name,age FROM student
+        WHERE name LIKE concat('%',#{name},'%')
+        AND age >#{age}
+    </select>
+    <!--if查询-->
+    <select id="findIf" parameterType="Student" resultType="Student">
+        SELECT id,name,age FROM student
+        <where>
+            <if test="name!=null &amp; name!=''">
+                AND name LIKE concat('%',#{name},'%')
+            </if>
+            <if test="age &gt; 0">
+                AND age > #{age}
+            </if>
+        </where>
+
+    </select>
+    <!--if查询-->
+    <select id="findArray"  resultType="Student">
+        SELECT id,name,age FROM student
+        <if test="array.length>0">
+            WHERE id IN
+            <foreach collection="array" item="arrayId" open="(" separator="," close=")">
+                #{arrayId}
+            </foreach>
+        </if>
+    </select>
+    <!--list-->
+    <select id="findList" resultType="Student">
+        SELECT id,name,age FROM student
+        <if test="list.size>0">
+            WHERE id IN
+            <foreach collection="list" item="listId" open="(" separator="," close=")">
+                #{listId}
+            </foreach>
+        </if>
+    </select>
+    <!--map-->
+    <select id="findMap1" resultType="Student">
+        <include refid="studentSql"/>
+        <if test="myMap.keys.size>0">
+            WHERE id IN
+            <foreach collection="myMap.keys" item="mapKey" open="(" separator="," close=")">
+                #{mapKey}
+            </foreach>
+        </if>
+    </select>
+    <!--sql片段-->
+    <sql id="studentSql">
+        SELECT id,name,age FROM student
+    </sql>
 </mapper>

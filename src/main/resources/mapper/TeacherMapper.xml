@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.TeacherMapper">
+    <!--一对多实现-->
+    <select id="getTeacherById" resultMap="selectMap">
+        SELECT id,name FROM teacher WHERE tid=#{xxx}
+    </select>
+
+    <resultMap id="selectMap" type="Teacher">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <collection property="teachers" ofType="Teacher" select="getTeacherById" column="id"/>
+    </resultMap>
+
+    <!--多对一实现-->
+    <select id="getTeacher" resultMap="selectById">
+        SELECT id,name,tid FROM teacher WHERE id=#{xxx}
+    </select>
+
+    <resultMap id="selectById" type="Teacher">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <association property="teacher"  javaType="Teacher" select="getTeacher" column="tid"/>
+    </resultMap>
+</mapper>

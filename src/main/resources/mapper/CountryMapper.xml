@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.CountryMapper">
+    <!--根据id查询 国家-->
+    <select id="getCountryById" resultMap="countryMap">
+        SELECT cid,cname FROM country WHERE cid=#{xxx}
+    </select>
+    <!--根据关联国家的id 查询国家下面的城市-->
+    <select id="selectProvincial" resultType="Provincial">
+        SELECT pid,pname FROM provincial WHERE countryid=#{xxx}
+    </select>
+    <resultMap id="countryMap" type="Country">
+        <id property="id" column="cid"/>
+        <result property="name" column="cname"/>
+        <collection property="provincials" ofType="Provincial" select="selectProvincial"
+                    column="cid"/>
+    </resultMap>
+</mapper>
